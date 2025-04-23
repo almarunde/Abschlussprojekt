@@ -1,0 +1,188 @@
+[SetupInfo]
+Author                  = EMAIL@charite.de
+CreationDate         	= 01.01.2022
+InventoryID             =
+Description             = HERSTELLER SOFTWARE VERSION
+Method                  = Unattended
+Tested on               = Windows 10 x64
+Dependencies            = 
+Command line options    = /S2
+Last Change             =
+Build                   = 0
+Tags					= #TAG
+
+Build/Revision	Date		Autor							Changes
+----------------------------------------------------------------------------------------------------------------------
+
+[VarDefInfo]
+; <Variable>, <Type: 0=Computer 1=User>, <Allow NULL values: 0=No 1=Yes>
+
+[Setup]
+Version=16.2
+ShowCaption=1
+BlockInput=0
+Platform=*
+
+[Requirements]
+
+[Application]
+ProductName=SOFTWARE
+DeveloperName=HERSTELLER
+Version=VERSION
+Revision=1
+SetupName=%ProductName% %Version% %SetupWizard%
+Text1="\nEs wird Ihnen gerade Software bereitgestellt. Wenn Sie zum Neustart des Computers aufgefordert werden,", Arial Narrow, 14, , FFFFFF, 8, , Center
+Text2="\nbeenden Sie zuvor gestartete Anwendungen.", Arial Narrow, 14, , FFFFFF, 8, , Center
+Text3="\n\nSoftware Hersteller:",         Arial,           15, , 000000, 8, , Left
+Text4="%DeveloperName%",       Arial,           28, , FFFFFF, 8, , LEFT BOLD
+Text5="\nSoftware Name:",         Arial,           15, , 000000, 8, , Left
+Text6="%ProductName%",           Arial,           28, , FFFFFF, 8, , LEFT BOLD
+Text7="\nSoftware Version:",         Arial,           15, , 000000, 8, , Left
+Text8="%Version%",               Arial,           28, , FFFFFF, 8, , LEFT BOLD
+;Text9="Diese Installation braucht Seine Zeit ( ca. 20 min ),", Arial, 24, , FFFFFF, 8, ,    LEFT BOLD
+;Text10="unternehmen Sie nichts bis alle Fenster sich selbst wieder geschloßen haben.", Arial, 24, , FFFFFF, 8, ,    LEFT BOLD
+BackgroundColor=330000,ffffff
+Logo=Logo.bmp, -25#, -25#, 0, 0, FFFFFF, TRANSPARENT
+CopyDialogRect=5#, -30#, 0, 0, NORMAL
+UserKeyName=Empirum\Software\%DeveloperName%\%ProductName%
+MachineKeyName=Empirum\Software\%DeveloperName%\%ProductName%\%Version%
+UninstallKeyName=Empirum %DeveloperName% %ProductName% %Version%
+UninstallDisplayName=%ProductName% %Version%
+UninstallString=%ReinstallString% /U
+ReinstallString="%CommonSetupDir%\Setup.exe" "%ProgramFilesDir%\Empirum\Software\%DeveloperName% %ProductName% %Version%.%Revision%\Setup.inf"
+ReinstallMode=1
+SrcDir=..
+ApplicationDir=%ProgramFilesDir%\%DeveloperName%\%ProductName%
+SetupInfDir=Install
+AskUninstallOld=0
+ShellLinks=1
+CommonShellLinks=1
+CreateUnresolvableShellLinks=1
+UseStringSection=Strings:09
+UseSysStringSection=SysStrings:09
+DateWarning=1
+SizeWarning=1
+Reboot=2
+PreventExternalReboot=1
+StartServicesOnReboot=0
+CallTimeOut=3600
+AbortAfterCallTimeOut=1
+DisableCancelButton=1
+ShowEndMessage=1
+EndMessage=%EndMessageDesc%
+
+
+[Strings:07]
+Disk1=Installationsmedium 1
+EndMessageDesc=Die Installation wurde erfolgreich abgeschlossen!
+ErrorLogMessage=Die Installation/Deinstallation wurde mit einer Fehlermeldung abgebrochen!
+InstallationFor=Installation für:
+InstallerDesc=Dienstprogramm zum Installieren einzelner Komponenten.
+InstallerName=Installationsprogramm
+SetupWizard=Installations-Assistent
+Uninstallation=deinstallieren
+ErrorText=Fehler
+CallingText=beim Aufruf von
+
+[Strings:09]
+Disk1=Installation media 1
+EndMessageDesc=Installation was completed successfully!
+ErrorLogMessage=The installation/uninstallation aborted with an error message!
+InstallationFor=Installation for:
+InstallerDesc=Service program to install single components.
+InstallerName=Setup program
+SetupWizard=Installation Wizard
+Uninstallation=Uninstallation
+ErrorText=Error
+CallingText=launching
+
+[SysStrings:07]
+Users=Benutzer
+
+[SysStrings:09]
+Users=Users
+
+[Environment]
+ReInstSuccessMessage1031=Die Konfiguration wurde erfolgreich abgeschlossen.
+ReInstSuccessMessage1033=Configuration completed successfully.
+CommonSetupDir=%CommonFilesDir%\Setup%SetupBits%
+V_MachineValuesPath=\\%EmpirumServer%\Values$\MachineValues\%DomainName%
+V_UserValuesPath=%HKLM,"Software\matrix42\Software Depot","HomeServer"%\Values$\UserValues\%UserDomain%
+; !!! Setzen der entsprechenden ReplaceEnv Befehle für die Variablen im Abschnitt [Product] nicht vergessen!!!
+; !!! Don't forget to set the appropriate ReplaceEnv instructions for the variables in the section [Product]!!!
+V_RegKey=REGKEY
+V_LogFile=%windir%\debug\%ProductName%.%Version%.%Revision%.log
+
+V_Installer=%SRC%\INSTALLER.msi
+
+[Processes]
+PROCESS=PROCESS.exe, PROCESS, KILLPROCESS ABORT
+
+[Encryption]
+
+[Disks]
+1=%Disk1%
+
+[Options]
+Installer = %InstallerName%, COPYALWAYS, Installer, "%InstallerDesc%"
+Product   = %ProductName%,   COPYALWAYS, Product,   "%ProductDesc%"
+
+[OptionDependencies]
+
+[OptionGroups]
+
+[Installer]
+1:..\..\..\..\User\Setup.exe,          %CommonSetupDir%, OPTIONAL USEFILENAME DIRECTORY NOSIZEWARNING SETUP, 0
+1:..\..\..\..\User\SetupDeu.chm,       %CommonSetupDir%, OPTIONAL USEFILENAME DIRECTORY NOSIZEWARNING SETUP, 0
+1:..\..\..\..\User\SetupEnu.chm,       %CommonSetupDir%, OPTIONAL USEFILENAME DIRECTORY NOSIZEWARNING SETUP, 0
+1:..\..\..\..\User\Mx42SynSem.dll,     %System%,         OPTIONAL USEFILENAME DIRECTORY NOSIZEWARNING SETUP WINDOWS32, 0
+1:..\..\..\..\User\x64\Mx42SynSem.dll, %System%,         OPTIONAL USEFILENAME DIRECTORY NOSIZEWARNING SETUP WINDOWS64, 0
+1:%SetupInfDir%\Setup.inf,             %ProgramFilesDir%\Empirum\Software\%DeveloperName% %ProductName% %Version%.%Revision%, DIRECTORY USEFILENAME, 0
+1:%SetupInfDir%\logo.bmp,              %ProgramFilesDir%\Empirum\Software\%DeveloperName% %ProductName% %Version%.%Revision%, DIRECTORY USEFILENAME, 0
+1:%Temp%\Setup64.exe,                  %CommonSetupDir%\Setup.exe, OPTIONAL NOSIZEWARNING SETUP ALWAYS WINDOWS64,      0
+
+
+[Product]
+#Set:Product, DONTDELETE MACHINE
+#Set:Uninstall, DELETE
+
+[Set:Product]
+AskKillProcesses 300, PROCESS
+If DoesRegKeyExist("HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" | DoesRegKeyExist("HKLM,SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" Then "Set:Repair" Else "Set:Install" EndIf
+
+#Set:Success
+
+[Set:Install]
+Echo Install
+CallHidden MsiExec /I "%V_Installer%" ALLUSERS=1 REBOOT=REALLYSUPPRESS ARPSYSTEMCOMPONENT=1 /qb-! /L*v "%V_LogFile%"
+Sleep 1001
+If DoesRegKeyExist("HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "0" & DoesRegKeyExist("HKLM,SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "0" Then "Set:InstallError" EndIf
+
+[Set:Repair]
+Echo Repair
+CallHidden MsiExec /X "%V_RegKey%" REBOOT=REALLYSUPPRESS /qb-! /L*v "%V_LogFile%"
+Sleep 502
+If DoesRegKeyExist("HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" | DoesRegKeyExist("HKLM,SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" Then "Set:UninstallError" EndIf
+Sleep 3002
+#Set:Install
+
+[Set:Uninstall]
+If DoesRegKeyExist("HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" | DoesRegKeyExist("HKLM,SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" Then "Set:UninstallError" EndIf
+-Sleep 503
+-CallHidden MsiExec /X "%V_RegKey%" REBOOT=REALLYSUPPRESS /qb-! /L*v "%V_LogFile%"
+-AskKillProcesses 300, PROCESS
+-Echo Uninstall
+
+[Set:InstallError]
+Cmd /C Reg Add "HKLM\SOFTWARE\Matrix42\Software Depot" /v "LastError" /t REG_SZ /d "[ERROR]Fehler bei der Installation." /f
+ErrorLogMsg [ERROR]Fehler bei der Installation.
+Abort
+
+[Set:UninstallError]
+-Abort
+-ErrorLogMsg [ERROR]Fehler bei Deinstallation.
+-Cmd /C Reg Add "HKLM\SOFTWARE\Matrix42\Software Depot" /v "LastError" /t REG_SZ /d "[ERROR]Fehler bei Deinstallation." /f
+
+[Set:Success]
+Cmd /C Reg Add "HKLM\SOFTWARE\Matrix42\Software Depot" /v "LastError" /t REG_SZ /d "[SUCCESS]Erfolgreich installiert." /f
+Exit

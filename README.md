@@ -3,22 +3,33 @@
 
 Folgende Software muss auf deinem System installiert sein:
 
-- [Pycharm](https://www.jetbrains.com/pycharm/download/?section=windows)
-- [Git Bash](https://git-scm.com/downloads/win)
-- [Python](https://www.python.org/downloads/)
+- Backend:
+  - [Pycharm](https://www.jetbrains.com/pycharm/download/?section=windows)
+  - [Git Bash](https://git-scm.com/downloads/win)
+  - [Python](https://www.python.org/downloads/)
+- Frontend:
+  - [Node.js](https://nodejs.org/)
 
-## Initialisierung für Git-Konnektivität
-Muss immer über git bash durchgeführt werden, sobald das Notebook wieder im Charité-Netz ist.
+## Proxy konfigurieren
+Muss **immer über git bash** durchgeführt werden, sobald das Notebook wieder im Charité-Netz ist.
 
-```bash
+### Mit Git:
+```git bash
+# Execute in git bash!!!
 git config --global http.proxy http://proxy.charite.de:8080
 ```
 
+### Mit npm:
+```git bash
+# Execute in git bash!!!
+npm config set proxy http://proxy.charite.de:8080
+npm config set https-proxy http://proxy.charite.de:8080
+```
+
+## Aufsetzen des Backends (Flask) - http://localhost:???
 ## Aufsetzen des Virtual Environments
 
-Dies ist eine Anleitung zum Aufsetzen des Virtual Environments.
-
-Dies ist vor der weiteren Installation von Flask und Co. auszuführen.
+Dies ist eine Anleitung zum Aufsetzen des Virtual Environments und ist vor der weiteren Installation von Flask und Co. auszuführen.
 
 ### Step 1 - Create an Environment
 im Projekt-directory:
@@ -40,30 +51,23 @@ dieses soll immer vor der Arbeit darin aktiviert werden.
 pip install flask --proxy=http://proxy.charite.de:8080
 ```
 
-## Aufsetzen des Frontends
-## Voraussetzungen
-
-Folgende Software muss auf deinem System installiert sein:
-
-- [Node.js](https://nodejs.org/) (empfohlene Version: 22.12.0)
-- [Yarn](https://yarnpkg.com/)
-- [Angular CLI](https://angular.io/cli)
-
+## Aufsetzen des Frontends (React) - http://localhost:5173
 ## Installation
 
-Führe folgende Befehle aus, um das Projekt lokal einzurichten:
-
-```sh
-# Abhängigkeiten installieren
-yarn install
+```git bash
+# Execute in git bash!!!
+npm create vite@latest frontend -- --template react
 ```
 
 ## Entwicklung
 
 Starte die Entwicklungsumgebung mit:
 
-```sh
-yarn start
+```git bash
+# Execute in git bash!!!
+cd frontend
+npm install
+npm run dev
 ```
 
-Das Projekt wird unter `http://localhost:4200/` verfügbar sein.
+Das Projekt wird unter `http://localhost:5173/` verfügbar sein.

@@ -9,6 +9,7 @@ Folgende Software muss auf deinem System installiert sein:
   - [Python](https://www.python.org/downloads/)
 - Frontend:
   - [Node.js](https://nodejs.org/)
+  - Axios ( via ```npm i axios --save``` )
 
 ## Proxy konfigurieren
 Muss **immer über git bash** durchgeführt werden, sobald das Notebook wieder im Charité-Netz ist.

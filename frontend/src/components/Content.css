@@ -16,18 +16,22 @@
 .absatz {
     height: 100px;
 }
-
 .kleinerAbsatz {
     height: 20px;
+}
+
+.ueberschriften {
+    font-size: 24px;
+    font-weight: bolder;
 }
 
 .bigFont {
     font-size: 26px;
 }
 
-.ueberschriften {
-    font-size: 24px;
-    font-weight: bolder;
+.infotext{
+    font-size: 20px;
+    display: inline-flex;
 }
 
 #threeRows {
@@ -42,21 +46,18 @@
     font-size: 20px;
 }
 
-#hochladen {
+#hochladenButton {
     background-color: #004D9B;
     color: #ffffff;
     font-size: 26px;
     font-weight: bold;
     width: 500px;
 }
-#hochladen:hover {
+#hochladenButton:enabled:hover {
     background-color: #165ca3;
+    border-color: #646cff;
 }
-
-.infotext{
-    font-size: 20px;
-    display: inline-flex;
-}
-.boldFont{
-    font-weight: bold;
+#hochladenButton:disabled {
+    background-color: #7e898f;
+    cursor: no-drop;
 }

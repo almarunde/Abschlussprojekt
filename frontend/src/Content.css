@@ -1,0 +1,62 @@
+#content {
+    background-color: #CBCFD2;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 4px #9B9EA1 inset;
+}
+
+#aktuelles {
+    background-color: #ffffff;
+    width: 100%;
+    text-align: left;
+    box-shadow: 0 4px 4px #C0C0C0 inset;
+    padding: 1vw;
+}
+
+.absatz {
+    height: 100px;
+}
+
+.kleinerAbsatz {
+    height: 20px;
+}
+
+.bigFont {
+    font-size: 26px;
+}
+
+.ueberschriften {
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+#threeRows {
+    display: flex;
+    width: 100%;
+}
+
+.anleitungsText {
+    width: 33.3%;
+    text-align: center;
+    padding: 1vw;
+    font-size: 20px;
+}
+
+#hochladen {
+    background-color: #004D9B;
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: bold;
+    width: 500px;
+}
+#hochladen:hover {
+    background-color: #165ca3;
+}
+
+.infotext{
+    font-size: 20px;
+    display: inline-flex;
+}
+.boldFont{
+    font-weight: bold;
+}

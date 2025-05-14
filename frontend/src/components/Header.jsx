@@ -1,9 +1,10 @@
 import './Header.css'
-import Logo_Charite from "./assets/Logo_Charite.png"
-import Pakulfus from "./assets/PaketierungsWizard.png"
+import Logo_Charite from "../assets/Logo_Charite.png"
+import Pakulfus from "../assets/PaketierungsWizard.png"
 
 function Header() {
     return (
+        // Überlegung hier Logo und Pakulfus zu minimieren (logo siehe cd, pakulfus ohne schrift)
         <>
             <div id={"header"}>
                 <div id={"linkeSpalte"} className={"spalten"}><img src={Logo_Charite} id={"logo"}></img></div>

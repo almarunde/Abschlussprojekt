@@ -1,8 +1,8 @@
 [SetupInfo]
-Author                  = EMAIL@charite.de
-CreationDate         	= 01.01.2022
+Author                  = paketierungshelfer by alma.runde@charite.de
+CreationDate         	= [CURRENTDATE]
 InventoryID             =
-Description             = HERSTELLER SOFTWARE VERSION
+Description             = [HERSTELLER] [SOFTWARE] [VERSION]
 Method                  = Unattended
 Tested on               = Windows 10 x64
 Dependencies            = 
@@ -26,9 +26,9 @@ Platform=*
 [Requirements]
 
 [Application]
-ProductName=SOFTWARE
-DeveloperName=HERSTELLER
-Version=VERSION
+ProductName=[SOFTWARE]
+DeveloperName=[HERSTELLER]
+Version=[VERSION]
 Revision=1
 SetupName=%ProductName% %Version% %SetupWizard%
 Text1="\nEs wird Ihnen gerade Software bereitgestellt. Wenn Sie zum Neustart des Computers aufgefordert werden,", Arial Narrow, 14, , FFFFFF, 8, , Center
@@ -40,7 +40,7 @@ Text6="%ProductName%",           Arial,           28, , FFFFFF, 8, , LEFT BOLD
 Text7="\nSoftware Version:",         Arial,           15, , 000000, 8, , Left
 Text8="%Version%",               Arial,           28, , FFFFFF, 8, , LEFT BOLD
 ;Text9="Diese Installation braucht Seine Zeit ( ca. 20 min ),", Arial, 24, , FFFFFF, 8, ,    LEFT BOLD
-;Text10="unternehmen Sie nichts bis alle Fenster sich selbst wieder geschloßen haben.", Arial, 24, , FFFFFF, 8, ,    LEFT BOLD
+;Text10="unternehmen Sie nichts bis alle Fenster sich selbst wieder geschloï¿½en haben.", Arial, 24, , FFFFFF, 8, ,    LEFT BOLD
 BackgroundColor=330000,ffffff
 Logo=Logo.bmp, -25#, -25#, 0, 0, FFFFFF, TRANSPARENT
 CopyDialogRect=5#, -30#, 0, 0, NORMAL
@@ -52,7 +52,7 @@ UninstallString=%ReinstallString% /U
 ReinstallString="%CommonSetupDir%\Setup.exe" "%ProgramFilesDir%\Empirum\Software\%DeveloperName% %ProductName% %Version%.%Revision%\Setup.inf"
 ReinstallMode=1
 SrcDir=..
-ApplicationDir=%ProgramFilesDir%\%DeveloperName%\%ProductName%
+ApplicationDir=[AppDir]
 SetupInfDir=Install
 AskUninstallOld=0
 ShellLinks=1
@@ -76,7 +76,7 @@ EndMessage=%EndMessageDesc%
 Disk1=Installationsmedium 1
 EndMessageDesc=Die Installation wurde erfolgreich abgeschlossen!
 ErrorLogMessage=Die Installation/Deinstallation wurde mit einer Fehlermeldung abgebrochen!
-InstallationFor=Installation für:
+InstallationFor=Installation fï¿½r:
 InstallerDesc=Dienstprogramm zum Installieren einzelner Komponenten.
 InstallerName=Installationsprogramm
 SetupWizard=Installations-Assistent
@@ -108,15 +108,15 @@ ReInstSuccessMessage1033=Configuration completed successfully.
 CommonSetupDir=%CommonFilesDir%\Setup%SetupBits%
 V_MachineValuesPath=\\%EmpirumServer%\Values$\MachineValues\%DomainName%
 V_UserValuesPath=%HKLM,"Software\matrix42\Software Depot","HomeServer"%\Values$\UserValues\%UserDomain%
-; !!! Setzen der entsprechenden ReplaceEnv Befehle für die Variablen im Abschnitt [Product] nicht vergessen!!!
+; !!! Setzen der entsprechenden ReplaceEnv Befehle fï¿½r die Variablen im Abschnitt [Product] nicht vergessen!!!
 ; !!! Don't forget to set the appropriate ReplaceEnv instructions for the variables in the section [Product]!!!
-V_RegKey=REGKEY
+V_RegKey=[REGKEY]
 V_LogFile=%windir%\debug\%ProductName%.%Version%.%Revision%.log
 
-V_Installer=%SRC%\INSTALLER.msi
+V_Installer=%SRC%\[INSTALLER.msi]
 
 [Processes]
-PROCESS=PROCESS.exe, PROCESS, KILLPROCESS ABORT
+[PROCESS]=[PROCESS.exe], [PROCESS], KILLPROCESS ABORT
 
 [Encryption]
 
@@ -147,7 +147,7 @@ Product   = %ProductName%,   COPYALWAYS, Product,   "%ProductDesc%"
 #Set:Uninstall, DELETE
 
 [Set:Product]
-AskKillProcesses 300, PROCESS
+AskKillProcesses 300, [PROCESS]
 If DoesRegKeyExist("HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" | DoesRegKeyExist("HKLM,SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" Then "Set:Repair" Else "Set:Install" EndIf
 
 #Set:Success

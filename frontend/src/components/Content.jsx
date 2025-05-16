@@ -22,13 +22,13 @@ function Content() {
     // Erstellt FormData Objekt mit Datei im Anhang
     // Durch Button-Disabling nur bei richtigen Dateien
     const onFileUpload = () => {
+
+        // Why needed
         const formData = new FormData();
-        formData.append(
-            "newFile",
-            selectedFile,
-            selectedFile.name
-        );
-        axios.post("http://localhost:3000/api/uploadfile", formData);
+        formData.append('file', selectedFile);
+        formData.append('filename', selectedFile.name);
+
+        axios.post('http://localhost:5000/fileToBackend', formData)
     }
 
     // Identifiziert Dateityp anhand Namen

@@ -69,9 +69,8 @@ Danach noch in IDE dafür sorgen, dass Paket definitiv installiert ist.
 ## Starten des Backends
 Nach Aktivierung der .venv:
 ```sh
-flask --app controllers run
+flask --app controllers run --debug
 ```
-Danach noch in IDE dafür sorgen, dass Paket definitiv installiert ist.
 
 Das Projekt wird unter `http://localhost:5000/` verfügbar sein.
 

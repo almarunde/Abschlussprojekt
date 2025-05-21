@@ -1,6 +1,7 @@
 import './Content.css'
 import React, {useState} from "react";
 import axios from "axios";
+import {ClipLoader} from "react-spinners";
 
 function Content() {
 
@@ -13,22 +14,31 @@ function Content() {
     }
 
     const [selectedFile, setSelectedFile] = useState(null)
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState("");
 
     // Setzt selectedFile bei neuer Dateiauswahl
     const onFileChange = (event) => {
-        setSelectedFile(event.target.files[0])
+        const file = event.target.files[0];
+        if (!file) return;
+
+        setSelectedFile(file);
+        setLoading(false);
     }
 
     // Erstellt FormData Objekt mit Datei im Anhang
     // Durch Button-Disabling nur bei richtigen Dateien
     const onFileUpload = () => {
 
-        // Why needed
+        console.log("Upload-Funktion wurde aufgerufen");
+
         const formData = new FormData();
         formData.append('file', selectedFile);
         formData.append('filename', selectedFile.name);
 
-        axios.post('http://localhost:5000/fileToBackend', formData)
+        axios.post("http://localhost:5000/fileToBackend", formData)
+            .then(res => console.log("Backend-Antwort:", res.data))
+            .catch(err => console.error("Fehler beim Backend-Call:", err));
     }
 
     // Identifiziert Dateityp anhand Namen
@@ -66,6 +76,7 @@ function Content() {
 
                 <input type="file" onChange={onFileChange}/>
                 <p className={"kleinerAbsatz"}></p>
+                <div><ClipLoader loading={loading} color="#123abc" size={50}/></div>
                 <div>{identifyFile()}</div>
                 <p className={"kleinerAbsatz"}></p>
                 <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}>Paketierung erstellen

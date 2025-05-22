@@ -15,7 +15,6 @@ function Content() {
 
     const [selectedFile, setSelectedFile] = useState(null)
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
 
     // Setzt selectedFile bei neuer Dateiauswahl
     const onFileChange = (event) => {
@@ -29,16 +28,20 @@ function Content() {
     // Erstellt FormData Objekt mit Datei im Anhang
     // Durch Button-Disabling nur bei richtigen Dateien
     const onFileUpload = () => {
+        if (selectedFile) {
+            console.log("Upload-Funktion wurde aufgerufen");
 
-        console.log("Upload-Funktion wurde aufgerufen");
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('filename', selectedFile.name);
 
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-        formData.append('filename', selectedFile.name);
-
-        axios.post("http://localhost:5000/fileToBackend", formData)
-            .then(res => console.log("Backend-Antwort:", res.data))
-            .catch(err => console.error("Fehler beim Backend-Call:", err));
+            axios.post("http://localhost:5000/fileToBackend", formData)
+                .then(res => console.log("Backend-Antwort:", res.data))
+                .catch(err => console.error("Fehler beim Backend-Call:", err));
+        }
+        else {
+            console.log("Erstellungsversuch ohne Datei");
+        }
     }
 
     // Identifiziert Dateityp anhand Namen
@@ -54,9 +57,10 @@ function Content() {
                     <div className={"ueberschriften"}>Datei ist eine .msi</div>
                 )
             } else if (name.includes(".exe")) {
-                enableHochladenButton()
+                disableHochladenButton()
                 return (
-                    <div className={"ueberschriften"}>Datei ist eine .exe</div>
+                    <div className={"ueberschriften"}>Die Funktionalität zur Erstellung von .exe-Paketierungen wird zur
+                        Zeit noch nicht bereitgestellt.</div>
                 )
             } else {
                 disableHochladenButton()

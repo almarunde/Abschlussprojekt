@@ -26,7 +26,7 @@ def upload_file():
     msifilename = request.form.get('filename', 'unbekannt')
 
     if ".msi" in msifilename:
-        return create_package(msifile)
+        return create_package(msifile, msifilename)
     elif ".exe" in msifilename:
         return {'message': '.exe'}, 200
 

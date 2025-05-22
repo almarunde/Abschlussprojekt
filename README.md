@@ -9,6 +9,7 @@ Folgende Software muss auf deinem System installiert sein:
   - [Python](https://www.python.org/downloads/)
   - Flask and Flask_CORS (siehe Backend Schritt 4 & 5)
   - pywin32 (ÜBERLEGEN OB DIESE NUR UNTEN ERWÄHNT WERDEN SOLLEN)
+  - powershell plugin in ide
 - Frontend:
   - [Node.js](https://nodejs.org/)
   - Axios ( via ```npm i axios --save``` )

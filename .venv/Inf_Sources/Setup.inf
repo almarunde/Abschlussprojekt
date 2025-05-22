@@ -1,5 +1,5 @@
 [SetupInfo]
-Author                  = paketierungshelfer by alma.runde@charite.de
+Author                  = alma.runde@charite.de paketierungshelfer
 CreationDate         	= [CURRENTDATE]
 InventoryID             =
 Description             = [HERSTELLER] [SOFTWARE] [VERSION]
@@ -170,7 +170,7 @@ Sleep 3002
 If DoesRegKeyExist("HKLM,SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" | DoesRegKeyExist("HKLM,SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\%V_RegKey%,UnInstallString") == "1" Then "Set:UninstallError" EndIf
 -Sleep 503
 -CallHidden MsiExec /X "%V_RegKey%" REBOOT=REALLYSUPPRESS /qb-! /L*v "%V_LogFile%"
--AskKillProcesses 300, PROCESS
+-AskKillProcesses 300, [PROCESS]
 -Echo Uninstall
 
 [Set:InstallError]

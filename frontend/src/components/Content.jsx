@@ -1,6 +1,7 @@
 import './Content.css'
 import React, {useState} from "react";
 import axios from "axios";
+import {ClipLoader} from "react-spinners";
 
 function Content() {
 
@@ -13,22 +14,34 @@ function Content() {
     }
 
     const [selectedFile, setSelectedFile] = useState(null)
+    const [loading, setLoading] = useState(false);
 
     // Setzt selectedFile bei neuer Dateiauswahl
     const onFileChange = (event) => {
-        setSelectedFile(event.target.files[0])
+        const file = event.target.files[0];
+        if (!file) return;
+
+        setSelectedFile(file);
+        setLoading(false);
     }
 
     // Erstellt FormData Objekt mit Datei im Anhang
     // Durch Button-Disabling nur bei richtigen Dateien
     const onFileUpload = () => {
-        const formData = new FormData();
-        formData.append(
-            "newFile",
-            selectedFile,
-            selectedFile.name
-        );
-        axios.post("http://localhost:3000/api/uploadfile", formData);
+        if (selectedFile) {
+            console.log("Upload-Funktion wurde aufgerufen");
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('filename', selectedFile.name);
+
+            axios.post("http://localhost:5000/fileToBackend", formData)
+                .then(res => console.log("Backend-Antwort:", res.data))
+                .catch(err => console.error("Fehler beim Backend-Call:", err));
+        }
+        else {
+            console.log("Erstellungsversuch ohne Datei");
+        }
     }
 
     // Identifiziert Dateityp anhand Namen
@@ -44,9 +57,10 @@ function Content() {
                     <div className={"ueberschriften"}>Datei ist eine .msi</div>
                 )
             } else if (name.includes(".exe")) {
-                enableHochladenButton()
+                disableHochladenButton()
                 return (
-                    <div className={"ueberschriften"}>Datei ist eine .exe</div>
+                    <div className={"ueberschriften"}>Die Funktionalität zur Erstellung von .exe-Paketierungen wird zur
+                        Zeit noch nicht bereitgestellt.</div>
                 )
             } else {
                 disableHochladenButton()
@@ -66,6 +80,7 @@ function Content() {
 
                 <input type="file" onChange={onFileChange}/>
                 <p className={"kleinerAbsatz"}></p>
+                <div><ClipLoader loading={loading} color="#123abc" size={50}/></div>
                 <div>{identifyFile()}</div>
                 <p className={"kleinerAbsatz"}></p>
                 <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}>Paketierung erstellen

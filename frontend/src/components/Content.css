@@ -62,18 +62,26 @@
     font-size: 20px;
 }
 
-#hochladenButton {
+.allButtons {
     background-color: #004D9B;
     color: #ffffff;
     font-size: 26px;
     font-weight: bold;
     width: 500px;
 }
-#hochladenButton:enabled:hover {
+.allButtons:enabled:hover {
     background-color: #165ca3;
     border-color: #646cff;
 }
-#hochladenButton:disabled {
+.allButtons:disabled {
     background-color: #7e898f;
     cursor: no-drop;
+}
+
+#hochladenButton {
+    display: inline;
+}
+
+#downloadButton {
+    display: none;
 }

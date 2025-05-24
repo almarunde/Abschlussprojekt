@@ -79,8 +79,9 @@ def create_package(msifile, msifilename):
 
     # Zum Sparen von Speicherplatz auf dem Server - Uninitialisierung
     delete_file(temp_path)
-    #delete_file(install_folder)
-    return "Paketierung erfolgreich"
+
+    # Rückgabe von Oberpfad
+    return f"{parent_folder}.zip"
 
 def replace(inf_path, search_word, replacement_word):
     try:

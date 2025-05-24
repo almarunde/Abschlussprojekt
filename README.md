@@ -8,7 +8,6 @@ Folgende Software muss auf deinem System installiert sein:
   - [Git Bash](https://git-scm.com/downloads/win)
   - [Python](https://www.python.org/downloads/)
   - Flask and Flask_CORS (siehe Backend Schritt 4 & 5)
-  - pywin32 (ÜBERLEGEN OB DIESE NUR UNTEN ERWÄHNT WERDEN SOLLEN)
   - powershell plugin in ide
 - Frontend:
   - [Node.js](https://nodejs.org/)
@@ -62,6 +61,7 @@ pip install flask-cors --proxy=http://proxy.charite.de:8080
 Danach noch in IDE dafür sorgen, dass Paket definitiv installiert ist.
 
 ### Step 5 - Install pywin32
+In der aktuellen Version noch nicht nötig durch PowerShell-Lösung.
 ```sh
 pip install pywin32 --proxy=http://proxy.charite.de:8080
 ```

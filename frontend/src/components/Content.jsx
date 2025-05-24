@@ -5,14 +5,6 @@ import {ClipLoader} from "react-spinners";
 
 function Content() {
 
-    /*const enableHochladenButton = () => {
-        document.getElementById("hochladenButton").disabled = false;
-    }
-
-    const disableHochladenButton = () => {
-        document.getElementById("hochladenButton").disabled = true;
-    }*/
-
     const [selectedFile, setSelectedFile] = useState(null)
     const [loading, setLoading] = useState(false);
     const [filePath, setFilePath] = useState(null);
@@ -57,16 +49,32 @@ function Content() {
         }
     }
 
-    const onFileDownload = () => {
-        const link = document.createElement('a');
-        link.href = `http://localhost:5000/download?path=${filePath}`;
-        link.setAttribute('download', '');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    const onFileDownload = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5000/download?path=${filePath}`, {
+                responseType: 'blob',
+            });
 
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Paketierung.zip');
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            // Cleanup call
+            await axios.post("http://localhost:5000/cleanup", {
+                path: filePath
+            });
+
+            console.log("Server-Dateien gelöscht");
+        } catch (err) {
+            console.error("Fehler beim Herunterladen oder Bereinigen:", err);
+        }
     }
 
+    // onFileUpload erst ermöglichen, wenn Dateityp ok, ohne render-Fehler zu triggern
     useEffect(() => {
         if (!selectedFile) {
             setIsUploadDisabled(true);
@@ -84,7 +92,7 @@ function Content() {
         }
     }, [selectedFile]);
 
-    // Identifiziert Dateityp anhand Namen
+    // Identifiziert Dateityp anhand Namen (Zur Bearbeitung) - eventuell noch entfernen
     const identifyFile = () => {
         if (!selectedFile) return null;
 
@@ -98,52 +106,58 @@ function Content() {
         }
     }
 
-return (
-    <>
-        <div id={"content"}>
-            <p className={"absatz"}></p>
-            <p className={"bigFont"}>Paketierungen erschaffen - auf einen Knopfdruck.</p>
-            <p className={"kleinerAbsatz"}></p>
+    return (
+        <>
+            <div id={"content"}>
+                <p className={"absatz"}></p>
+                <p className={"bigFont"}>Paketierungen erschaffen - auf einen Knopfdruck.</p>
+                <p className={"kleinerAbsatz"}></p>
 
-            <input type="file" accept={".msi, .exe"} onChange={onFileChange}/>
-            <p className={"kleinerAbsatz"}></p>
-            <div><ClipLoader loading={loading} color="#123abc" size={50}/></div>
-            <div>{identifyFile()}</div>
-            <p className={"kleinerAbsatz"}></p>
-            <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}
-                    disabled={isUploadDisabled}>Paketierung erstellen
-            </button>
-            <button className={"allButtons"} id={"downloadButton"} onClick={onFileDownload}>Paketierung runterladen
-            </button>
+                <input type="file" accept={".msi, .exe"} onChange={onFileChange}/>
+                <p className={"kleinerAbsatz"}></p>
+                <div><ClipLoader loading={loading} color="#123abc" size={50}/></div>
+                <div>{identifyFile()}</div>
+                <p className={"kleinerAbsatz"}></p>
+                <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}
+                        disabled={isUploadDisabled}>Paketierung erstellen
+                </button>
+                <button className={"allButtons"} id={"downloadButton"} onClick={onFileDownload}>Paketierung
+                    runterladen
+                </button>
+                <button className={"allButtons"} id={"downloadButton"} onClick={onFileDownload}>Paketierung
+                    runterladen
+                </button>
 
-            <p className={"absatz"}></p>
-            <p className={"ueberschriften"}>Bedienungsanleitung:</p>
-            <p className={"kleinerAbsatz"}></p>
-            <div id={"threeRows"}>
-                <div className={"anleitungsText"}>1) Laden Sie eine Installationsdatei mit dem Dateitypen .msi oder
-                    .exe hoch.
+                <p className={"absatz"}></p>
+                <p className={"ueberschriften"}>Bedienungsanleitung:</p>
+                <p className={"kleinerAbsatz"}></p>
+                <div id={"threeRows"}>
+                    <div className={"anleitungsText"}>1) Laden Sie eine Installationsdatei mit dem Dateitypen .msi
+                        oder
+                        .exe hoch.
+                    </div>
+                    <div className={"anleitungsText"}>2) Das Paketierungstool bereitet für Sie in sekundenschnelle
+                        ein
+                        fertiges Paket zu.
+                    </div>
+                    <div className={"anleitungsText"}>3) Das fertige Paket wird Ihnen als .zip-Datei bereitgestellt,
+                        welche Sie anschließend runterladen können.
+                    </div>
                 </div>
-                <div className={"anleitungsText"}>2) Das Paketierungstool bereitet für Sie in sekundenschnelle ein
-                    fertiges Paket zu.
-                </div>
-                <div className={"anleitungsText"}>3) Das fertige Paket wird Ihnen als .zip-Datei bereitgestellt,
-                    welche Sie anschließend runterladen können.
-                </div>
+                <p className={"kleinerAbsatz"}></p>
             </div>
-            <p className={"kleinerAbsatz"}></p>
-        </div>
-        <div id={"aktuelles"}>
-            <p className={"ueberschriften"}>Aktuelles:</p>
-            <p className={"kleinerAbsatz"}></p>
-            <p className={"infotext"}>Diese Website wurde im Rahmen des IHK-Abschlussprojekts der
-                Ausbildungsrichtung Fachinformatik für
-                Anwendungsentwicklung erstellt und stellt durch diesen Rahmen bedingt nur die Funktionalität für
-                .msi-Softwarepaketierungen bereit.</p>
-            <p className={"absatz"}></p>
-        </div>
-    </>
+            <div id={"aktuelles"}>
+                <p className={"ueberschriften"}>Aktuelles:</p>
+                <p className={"kleinerAbsatz"}></p>
+                <p className={"infotext"}>Diese Website wurde im Rahmen des IHK-Abschlussprojekts der
+                    Ausbildungsrichtung Fachinformatik für
+                    Anwendungsentwicklung erstellt und stellt durch diesen Rahmen bedingt nur die Funktionalität für
+                    .msi-Softwarepaketierungen bereit.</p>
+                <p className={"absatz"}></p>
+            </div>
+        </>
 
-)
+    )
 
 }
 

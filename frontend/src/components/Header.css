@@ -1,41 +1,67 @@
 #header {
-    background-color: #ffffff;
-    color: #000000;
-    width: 100%;
     display: flex;
-    height: 4vw;
-    min-height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    height: 10vh;
+    min-height: 60px;
+    max-height: 100px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.spalten{
-    width: max(33.3vw, 1000px);
+#linkeSpalte,
+#rechteSpalte {
+    display: flex;
+    align-items: center;
 }
 
-#linkeSpalte{
-    text-align: left;
-}
-#mittlereSpalte{
-    width: 80vw;
-}
-#rechteSpalte{
-    text-align: left;
-    align-content: center;
+#linkeSpalte {
+    margin-left: 10px;
 }
 
-#logo{
-    padding: 4%;
+#rechteSpalte {
+    margin-right: 10px;
+}
+
+#mittlereSpalte {
+    flex: 1;
+}
+
+#linkeSpalte img {
     height: 100%;
+    max-height: 60px;
+    width: auto;
 }
-#pakulfus{
-    float: left;
-    padding: 4%;
-    height: 100%;
+
+#logo {
+    padding: 6%;
+}
+
+#pakulfus {
+    height: 50px;
+    max-height: 60px;
+    width: auto;
+    margin-right: 8px;
     border-radius: 30%;
 }
-#titelTool{
-    padding: 4% 4% 0;
-    font-size: max(1vw, 14px);
+
+#titelUndUntertitel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }
-#untertitelTool{
-    font-size: max(0.5vw, 8px);
+
+#titelTool {
+    margin: 0;
+    font-size: clamp(16px, 1.6vw, 20px);
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+#untertitelTool {
+    margin: 0;
+    font-size: clamp(11px, 1vw, 14px);
+    line-height: 1.2;
 }

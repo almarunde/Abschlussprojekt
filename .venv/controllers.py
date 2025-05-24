@@ -1,4 +1,7 @@
-from flask import Flask, request
+import os
+import shutil
+
+from flask import Flask, request, send_file
 from flask_cors import CORS
 from paketierungshelfer import create_package
 
@@ -26,12 +29,32 @@ def upload_file():
     msifilename = request.form.get('filename', 'unbekannt')
 
     if ".msi" in msifilename:
+        # Soll Pfad zur zip enthalten
         return create_package(msifile, msifilename)
     elif ".exe" in msifilename:
         return {'message': '.exe'}, 200
 
     return {'message': f'Datei {msifilename} empfangen'}, 200
 
+@app.route('/download')
+def download():
+    file_path = request.args.get('path')
+    return send_file(file_path, as_attachment=True)
+
+@app.route('/cleanup', methods=['POST'])
+def cleanup():
+    data = request.json
+    file_path = data.get("path")
+    base_folder = file_path.replace(".zip", "")
+
+    try:
+        if os.path.exists(file_path):
+            os.remove(file_path)
+        if os.path.exists(base_folder):
+            shutil.rmtree(base_folder)
+        return "Cleanup erfolgreich", 200
+    except Exception as e:
+        return str(e), 500
 
 # Versichert Ausführung bei direktem Start
 if __name__ == '__main__':

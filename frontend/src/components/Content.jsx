@@ -42,6 +42,7 @@ function Content() {
 
                     // Download erst nach Erfolg ermöglichen
                     document.getElementById("packageDone").style.display = "inline";
+                    document.getElementById("informUser").style.display = "inline";
                     document.getElementById("downloadButton").style.display = "inline";
                 })
                 .catch(err => console.error("Fehler beim Backend-Call:", err));
@@ -109,8 +110,10 @@ function Content() {
                 <input type="file" accept={".msi, .exe"} onChange={onFileChange}/>
                 <p className={"kleinerAbsatz"}></p>
                 <div><ClipLoader loading={loading} color="#123abc" size={70}/></div>
-                <p id={"isPackaging"}>Ihr Paket wird erstellt...</p>
-                <p id={"packageDone"}>Ihr Paket wurde erstellt und steht Ihnen nun zum Download bereit.</p>
+                <p className={"progressText"} id={"isPackaging"}>Ihr Paket wird erstellt...</p>
+                <p className={"progressText"} id={"packageDone"}>Ihr Paket wurde erstellt und steht Ihnen nun zum Download bereit.</p>
+                <p></p>
+                <p className={"progressText"} id={"informUser"}>Bitte passen Sie das Paket ggfs. an und geben Ihre Email-Adresse unter AUTHOR ein.</p>
                 <p className={"kleinerAbsatz"}></p>
                 <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}
                         disabled={isUploadDisabled}>Paketierung erstellen

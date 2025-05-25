@@ -17,9 +17,7 @@ function Content() {
             console.log("Keine Datei erkannt")
             return;
         }
-
         setSelectedFile(file);
-        setLoading(false);
     }
 
     // Erstellt FormData Objekt mit Datei im Anhang
@@ -27,6 +25,9 @@ function Content() {
     const onFileUpload = () => {
         console.log("Upload-Funktion wurde aufgerufen");
         if (selectedFile) {
+            document.getElementById("isPackaging").style.display = "inline";
+            setLoading(true);
+            document.getElementById("hochladenButton").style.display = "none";
 
             const formData = new FormData();
             formData.append('file', selectedFile);
@@ -35,14 +36,17 @@ function Content() {
             axios.post("http://localhost:5000/fileToBackend", formData)
                 .then(res => {
                     setFilePath(res.data);
+                    setLoading(false);
+                    document.getElementById("isPackaging").style.display = "none";
                     console.log("Backend-Antwort:", res.data);
+
+                    // Download erst nach Erfolg ermöglichen
+                    document.getElementById("packageDone").style.display = "inline";
+                    document.getElementById("informUser").style.display = "inline";
+                    document.getElementById("downloadButton").style.display = "inline";
                 })
                 .catch(err => console.error("Fehler beim Backend-Call:", err));
 
-            // Hier erst zeigen nach await - nach spinning wheel
-            document.getElementById("downloadButton").style.display = "inline";
-            document.getElementById("hochladenButton").style.display = "none";
-            //document.getElementById("neuePaketierungButton").style.display = "none";
         } else {
             // entweder hier show von error im fe oder immediately disabled haben
             console.log("Erstellungsversuch ohne Datei");
@@ -69,6 +73,10 @@ function Content() {
             });
 
             console.log("Server-Dateien gelöscht");
+
+            document.getElementById("downloadButton").style.display = "none";
+            document.getElementById("neuePaketierungButton").style.display = "inline";
+
         } catch (err) {
             console.error("Fehler beim Herunterladen oder Bereinigen:", err);
         }
@@ -92,20 +100,6 @@ function Content() {
         }
     }, [selectedFile]);
 
-    // Identifiziert Dateityp anhand Namen (Zur Bearbeitung) - eventuell noch entfernen
-    const identifyFile = () => {
-        if (!selectedFile) return null;
-
-        const name = selectedFile.name;
-        if (name.endsWith(".msi")) {
-            return <div className="ueberschriften">Datei ist eine .msi</div>;
-        } else if (name.endsWith(".exe")) {
-            return <div className="ueberschriften">.exe wird noch nicht unterstützt.</div>;
-        } else {
-            return <div className="ueberschriften">Ungültiger Dateityp!</div>;
-        }
-    }
-
     return (
         <>
             <div id={"content"}>
@@ -115,8 +109,11 @@ function Content() {
 
                 <input type="file" accept={".msi, .exe"} onChange={onFileChange}/>
                 <p className={"kleinerAbsatz"}></p>
-                <div><ClipLoader loading={loading} color="#123abc" size={50}/></div>
-                <div>{identifyFile()}</div>
+                <div><ClipLoader loading={loading} color="#123abc" size={70}/></div>
+                <p className={"progressText"} id={"isPackaging"}>Ihr Paket wird erstellt...</p>
+                <p className={"progressText"} id={"packageDone"}>Ihr Paket wurde erstellt und steht Ihnen nun zum Download bereit.</p>
+                <p></p>
+                <p className={"progressText"} id={"informUser"}>Bitte passen Sie das Paket ggfs. an und geben Ihre Email-Adresse unter AUTHOR ein. Auch AppDir und Process.exe müssen noch abgeändert werden.</p>
                 <p className={"kleinerAbsatz"}></p>
                 <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}
                         disabled={isUploadDisabled}>Paketierung erstellen
@@ -124,8 +121,8 @@ function Content() {
                 <button className={"allButtons"} id={"downloadButton"} onClick={onFileDownload}>Paketierung
                     runterladen
                 </button>
-                <button className={"allButtons"} id={"downloadButton"} onClick={onFileDownload}>Paketierung
-                    runterladen
+                <button className={"allButtons"} id={"neuePaketierungButton"} onClick={() => window.location.reload()}>
+                    Neue Paketierung erstellen
                 </button>
 
                 <p className={"absatz"}></p>

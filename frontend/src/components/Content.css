@@ -16,6 +16,7 @@
 .absatz {
     height: 100px;
 }
+
 .kleinerAbsatz {
     height: 20px;
 }
@@ -29,25 +30,25 @@
     font-size: 26px;
 }
 
-.infotext{
+.infotext {
     font-size: 20px;
     display: inline-flex;
 }
 
 .spinner {
-  width: 30px;
-  height: 30px;
-  border: 4px solid lightgray;
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto;
+    width: 30px;
+    height: 30px;
+    border: 4px solid lightgray;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 #threeRows {
@@ -62,6 +63,16 @@
     font-size: 20px;
 }
 
+#isPackaging {
+    color: #004D9B;
+    display: none;
+}
+
+#packageDone {
+    color: #004D9B;
+    display: none;
+}
+
 .allButtons {
     background-color: #004D9B;
     color: #ffffff;
@@ -69,10 +80,12 @@
     font-weight: bold;
     width: 500px;
 }
+
 .allButtons:enabled:hover {
     background-color: #165ca3;
     border-color: #646cff;
 }
+
 .allButtons:disabled {
     background-color: #7e898f;
     cursor: no-drop;
@@ -84,4 +97,9 @@
 
 #downloadButton {
     display: none;
+}
+
+#neuePaketierungButton {
+    display: none;
+    background-color: #7e898f;
 }

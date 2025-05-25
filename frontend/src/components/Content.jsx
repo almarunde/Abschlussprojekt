@@ -113,7 +113,7 @@ function Content() {
                 <p className={"progressText"} id={"isPackaging"}>Ihr Paket wird erstellt...</p>
                 <p className={"progressText"} id={"packageDone"}>Ihr Paket wurde erstellt und steht Ihnen nun zum Download bereit.</p>
                 <p></p>
-                <p className={"progressText"} id={"informUser"}>Bitte passen Sie das Paket ggfs. an und geben Ihre Email-Adresse unter AUTHOR ein.</p>
+                <p className={"progressText"} id={"informUser"}>Bitte passen Sie das Paket ggfs. an und geben Ihre Email-Adresse unter AUTHOR ein. Auch AppDir und Process.exe müssen noch abgeändert werden.</p>
                 <p className={"kleinerAbsatz"}></p>
                 <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}
                         disabled={isUploadDisabled}>Paketierung erstellen

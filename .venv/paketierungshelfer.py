@@ -7,30 +7,17 @@ import logging
 from pathlib import Path
 
 # Für Arbeit im Backend und Troubleshooting
-# Eventuell zum Ende hin vorerst wieder entfernen
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s'
 )
-
 logger = logging.getLogger(__name__)
 
-'''
-    FUTURE OPT TODOS:
-    Zukünftig hybride Lösung VIA pywin32 library von python???
-
-    DIESE HIER WERDEN NOCH DAZUKOMMEN
-    - [PROCESS.exe] - KANN ICH DAS ÜBERHAUPT RAUSFINDEN??
-            alt notice an Nutzer, dass das ergänzt werden muss
-    - [AppDir] - KANN ICH DAS AUSLESEN ????????
-    => Vorerst Lösung durch Aufforderung an Nutzer
-    
-'''
-
-def create_package(msifile, msifilename):
+# Hier ganze Logik zu Auslese und .inf-Anpassung integriert
+def create_package(msifile, msifilename, email, appDir, processName):
     temp_path = save_temp_file(msifile)
 
-    # Alle wichtigen Daten aus .msi
+    # Alle wichtigen Daten (u.A. aus .msi) auslesen
     regkey = get_regkey(temp_path)
     date = get_date()
     hersteller = get_hersteller(temp_path)
@@ -45,7 +32,7 @@ def create_package(msifile, msifilename):
         logger.info("Fehler bei directory-Erstellung")
         logger.info(e)
 
-    # Vorschrieb kopieren für zu-editierende-inf
+    # Vorschrieb-inf kopieren für zu-editierende-inf
     parent_folder =f"C:/temp/1_msi/{hersteller}"
     source_folder = f"{parent_folder}/{software}/{version}"
     install_folder = f"{source_folder}/Install"
@@ -74,6 +61,11 @@ def create_package(msifile, msifilename):
     replace(final_inf, "[INSTALLER.msi]", msifilename)
     replace(final_inf, "[PROCESS]", software)
 
+    # Hier die aus dem Frontend übernommenen Instanzen übergeben:
+    replace(final_inf, "[AUTHOR]", email)
+    replace(final_inf, "[APPDIR]", appDir)
+    replace(final_inf, "[PROCESS.exe]", processName)
+
     # Paketierung zippen
     zip_path = shutil.make_archive(
         base_name=parent_folder,
@@ -82,12 +74,13 @@ def create_package(msifile, msifilename):
         base_dir="."
     )
 
-    # Zum Sparen von Speicherplatz auf dem Server - Uninitialisierung
+    # Zum Sparen von Speicherplatz auf dem Server - Löschung von temp-msi
     delete_file(temp_path)
 
     # Rückgabe von Oberpfad
     return f"{zip_path}"
 
+# Hier Logik zum Ersetzen von Teilen der .inf
 def replace(inf_path, search_word, replacement_word):
     try:
 
@@ -107,7 +100,8 @@ def replace(inf_path, search_word, replacement_word):
         logger.info(e)
         return False
 
-# Funktionen zur Auslese der benötigten Daten aus der .msi
+### Funktionen zur Auslese der benötigten Daten aus der .msi: ###
+# Datum auslesen
 def get_date():
     date = datetime.date.today()
     day = date.strftime("%d")
@@ -115,37 +109,40 @@ def get_date():
     year = date.strftime("%Y")
     return f"{day}.{month}.{year}"
 
+# Herstellername auslesen
 def get_hersteller(temp_path):
     abfrage = search_entry("SELECT Value FROM Property WHERE Property = 'Manufacturer'", temp_path)
 
     result = (run_powershell(abfrage)).stdout.decode().strip()
     return result
 
+# Softwarename auslesen
 def get_software(temp_path):
     abfrage = search_entry("SELECT Value FROM Property WHERE Property = 'ProductName'", temp_path)
 
     result = (run_powershell(abfrage)).stdout.decode().strip()
     return result
 
+# Versionsnummer auslesen
 def get_version(temp_path):
     abfrage = search_entry("SELECT Value FROM Property WHERE Property = 'ProductVersion'", temp_path)
 
     result = (run_powershell(abfrage)).stdout.decode().strip()
     return result
 
+# RegKey auslesen
 def get_regkey(temp_path):
     abfrage = search_entry("SELECT Value FROM Property WHERE Property = 'ProductCode'", temp_path)
 
     result = (run_powershell(abfrage)).stdout.decode().strip()
     return result
 
-# Aufruf von PowerShell - Rückgabe von Output
-# Geringer Kompatibilität pywin32 mit Funktionen und mangelhafter Doku von Microsoft verschuldet
+# Aufruf von PowerShell-Befehlen
 def run_powershell(cmd):
     completed = subprocess.run(["powershell", "-Command", cmd], capture_output=True)
     return completed
 
-# PowerShell-Script mit Platzhaltern für alle Anfragen
+# PowerShell-Script mit Platzhaltern für alle Auslese-Anfragen
 def search_entry(query, temp_path):
     find_regkey_ps = f"""
         $windowsInstaller = New-Object -ComObject WindowsInstaller.Installer

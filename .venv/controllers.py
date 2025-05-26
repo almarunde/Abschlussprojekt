@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, make_response
 from flask_cors import CORS
 from paketierungshelfer import create_package
 
@@ -39,7 +39,12 @@ def upload_file():
 @app.route('/download')
 def download():
     file_path = request.args.get('path')
-    return send_file(file_path, as_attachment=True)
+    filename = os.path.basename(file_path)
+
+    response = make_response(send_file(file_path, as_attachment=True))
+    response.headers["X-File-Name"] = filename  # Neuer Header
+    response.headers["Access-Control-Expose-Headers"] = "X-File-Name"  # Damit JS ihn lesen darf
+    return response
 
 @app.route('/cleanup', methods=['POST'])
 def cleanup():

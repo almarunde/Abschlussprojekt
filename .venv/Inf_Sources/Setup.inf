@@ -1,9 +1,9 @@
 [SetupInfo]
-Author                  = alma.runde@charite.de paketierungshelfer
+Author                  = [AUTHOR]
 CreationDate         	= [CURRENTDATE]
 InventoryID             =
 Description             = [HERSTELLER] [SOFTWARE] [VERSION]
-Method                  = Paketierungshelfer
+Method                  = Paketierungshelfer by Alma Runde
 Tested on               = Windows 10 x64
 Dependencies            = 
 Command line options    = /S2

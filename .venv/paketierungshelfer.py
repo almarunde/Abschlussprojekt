@@ -75,13 +75,18 @@ def create_package(msifile, msifilename):
     replace(final_inf, "[PROCESS]", software)
 
     # Paketierung zippen
-    shutil.make_archive(parent_folder, "zip", "C:/temp/1_msi")
+    zip_path = shutil.make_archive(
+        base_name=parent_folder,
+        format="zip",
+        root_dir=parent_folder,
+        base_dir="."
+    )
 
     # Zum Sparen von Speicherplatz auf dem Server - Uninitialisierung
     delete_file(temp_path)
 
     # Rückgabe von Oberpfad
-    return f"{parent_folder}.zip"
+    return f"{zip_path}"
 
 def replace(inf_path, search_word, replacement_word):
     try:
@@ -176,7 +181,6 @@ def save_temp_file(file_storage, suffix=".msi"):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
     file_storage.save(temp_file.name)
     temp_file.close()  # Datei wird nur geschrieben, nicht offen gehalten
-    #logger.info(temp_file.name)
     return temp_file.name
 
 # Löscht die temporäre Datei, wenn sie existiert.

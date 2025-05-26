@@ -1,17 +1,14 @@
 # Abschlussprojekt
 ## Voraussetzungen
 
-Folgende Software muss auf deinem System installiert sein:
+Folgende Software muss manuell auf dem System installiert sein:
 
 - Backend:
   - [Pycharm](https://www.jetbrains.com/pycharm/download/?section=windows)
   - [Git Bash](https://git-scm.com/downloads/win)
   - [Python](https://www.python.org/downloads/)
-  - Flask and Flask_CORS (siehe Backend Schritt 4 & 5)
-  - powershell plugin in ide
 - Frontend:
   - [Node.js](https://nodejs.org/)
-  - Axios ( via ```npm i axios --save``` )
 
 ## Proxy konfigurieren
 Muss **immer über git bash** durchgeführt werden, sobald das Notebook wieder im Charité-Netz ist.
@@ -60,12 +57,8 @@ pip install flask-cors --proxy=http://proxy.charite.de:8080
 ```
 Danach noch in IDE dafür sorgen, dass Paket definitiv installiert ist.
 
-### Step 5 - Install pywin32
-In der aktuellen Version noch nicht nötig durch PowerShell-Lösung.
-```sh
-pip install pywin32 --proxy=http://proxy.charite.de:8080
-```
-Danach noch in IDE dafür sorgen, dass Paket definitiv installiert ist.
+### Step 5 - Install PowerShell Plugin in IDE
+Unter File -> Settings -> Plugins -> PowerShell installieren
 
 ## Starten des Backends
 Nach Aktivierung der .venv:
@@ -75,12 +68,19 @@ flask --app controllers run --debug
 
 Das Projekt wird unter `http://localhost:5000/` verfügbar sein.
 
-## Aufsetzen des Frontends (React) - http://localhost:5173
-## Installation
+## Aufsetzen des Frontends (Vite with React) - http://localhost:5173
+## Installation 
+### Vite und React
 
 ```git bash
 # Execute in git bash!!!
 npm create vite@latest frontend -- --template react
+```
+
+### Axios
+```git bash
+# Execute in git bash!!!
+npm i axios --save
 ```
 
 ## Entwicklung
@@ -95,9 +95,10 @@ npm run dev
 ```
 Die Ausführung von npm Install ist nur beim ersten Mal wirklich nötig - kann aber nicht schaden
 
+
 Das Projekt wird unter `http://localhost:5173/` verfügbar sein.
 
-## Extra: Zur Entlastung des Speicherplatz des Servers: Aufgabenplanung Paket-Cache leeren
+## Wichtiges Extra: Zur Entlastung des Speicherplatz des Servers: Aufgabenplanung Paket-Cache leeren
 
 1. Dateien unter "extras" hier im Projekt nach C:\ProgramData\#Paketierungshelfer verschieben
 2. Aufgabenplanung öffnen

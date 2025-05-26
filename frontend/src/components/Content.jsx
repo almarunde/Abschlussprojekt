@@ -59,21 +59,25 @@ function Content() {
                 responseType: 'blob',
             });
 
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            // Neuen Header lesen
+            let filename = response.headers['x-file-name'] || 'fallback.zip';
+
+            const blob = new Blob([response.data], {type: 'application/zip'})
+
+            const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'Paketierung.zip');
+            link.setAttribute('download', filename);
             document.body.appendChild(link);
             link.click();
             link.remove();
 
-            // Cleanup call
+            // Cleanup
             await axios.post("http://localhost:5000/cleanup", {
                 path: filePath
             });
 
             console.log("Server-Dateien gelöscht");
-
             document.getElementById("downloadButton").style.display = "none";
             document.getElementById("neuePaketierungButton").style.display = "inline";
 
@@ -82,7 +86,7 @@ function Content() {
         }
     }
 
-    // onFileUpload erst ermöglichen, wenn Dateityp ok, ohne render-Fehler zu triggern
+    // onFileUpload von Anfang an nicht ermöglichen
     useEffect(() => {
         if (!selectedFile) {
             setIsUploadDisabled(true);
@@ -111,9 +115,11 @@ function Content() {
                 <p className={"kleinerAbsatz"}></p>
                 <div><ClipLoader loading={loading} color="#123abc" size={70}/></div>
                 <p className={"progressText"} id={"isPackaging"}>Ihr Paket wird erstellt...</p>
-                <p className={"progressText"} id={"packageDone"}>Ihr Paket wurde erstellt und steht Ihnen nun zum Download bereit.</p>
+                <p className={"progressText"} id={"packageDone"}>Ihr Paket wurde erstellt und steht Ihnen nun zum
+                    Download bereit.</p>
                 <p></p>
-                <p className={"progressText"} id={"informUser"}>Bitte passen Sie das Paket ggfs. an und geben Ihre Email-Adresse unter AUTHOR ein. Auch AppDir und Process.exe müssen noch abgeändert werden.</p>
+                <p className={"progressText"} id={"informUser"}>Bitte passen Sie das Paket ggfs. an und geben Ihre
+                    Email-Adresse unter AUTHOR ein. Auch AppDir und Process.exe müssen noch abgeändert werden.</p>
                 <p className={"kleinerAbsatz"}></p>
                 <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}
                         disabled={isUploadDisabled}>Paketierung erstellen

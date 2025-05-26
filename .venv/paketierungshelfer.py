@@ -75,13 +75,18 @@ def create_package(msifile, msifilename):
     replace(final_inf, "[PROCESS]", software)
 
     # Paketierung zippen
-    shutil.make_archive(parent_folder, "zip", "C:/temp/1_msi")
+    zip_path = shutil.make_archive(
+        base_name=parent_folder,
+        format="zip",
+        root_dir=parent_folder,
+        base_dir="."
+    )
 
     # Zum Sparen von Speicherplatz auf dem Server - Uninitialisierung
     delete_file(temp_path)
 
     # Rückgabe von Oberpfad
-    return f"{parent_folder}.zip"
+    return f"{zip_path}"
 
 def replace(inf_path, search_word, replacement_word):
     try:

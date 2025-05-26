@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
     
 '''
 
-def create_package(msifile, msifilename):
+def create_package(msifile, msifilename, email, appDir, processName):
     temp_path = save_temp_file(msifile)
 
     # Alle wichtigen Daten aus .msi
@@ -73,6 +73,11 @@ def create_package(msifile, msifilename):
 
     replace(final_inf, "[INSTALLER.msi]", msifilename)
     replace(final_inf, "[PROCESS]", software)
+
+    # Hier die aus dem Frontend übernommenen Instanzen übergeben:
+    replace(final_inf, "[AUTHOR]", email)
+    replace(final_inf, "[APPDIR]", appDir)
+    replace(final_inf, "[PROCESS.exe]", processName)
 
     # Paketierung zippen
     zip_path = shutil.make_archive(

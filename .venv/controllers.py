@@ -27,10 +27,13 @@ def upload_file():
     logger.info('Started')
     msifile = request.files.get('file')
     msifilename = request.form.get('filename', 'unbekannt')
+    email = request.form.get('email', 'unbekannt')
+    appDir = request.form.get('appDir', 'unbekannt')
+    processName = request.form.get('processName', 'unbekannt')
 
     if ".msi" in msifilename:
         # Soll Pfad zur zip enthalten
-        return create_package(msifile, msifilename)
+        return create_package(msifile, msifilename, email, appDir, processName)
     elif ".exe" in msifilename:
         return {'message': '.exe'}, 200
 

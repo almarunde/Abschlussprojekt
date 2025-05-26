@@ -6,6 +6,10 @@ import {ClipLoader} from "react-spinners";
 function Content() {
 
     const [selectedFile, setSelectedFile] = useState(null)
+    const [email, setEmail] = useState(null)
+    const [appDir, setAppDir] = useState(null)
+    const [processName, setProcessName] = useState(null)
+
     const [loading, setLoading] = useState(false);
     const [filePath, setFilePath] = useState(null);
     const [isUploadDisabled, setIsUploadDisabled] = useState(true);
@@ -22,8 +26,12 @@ function Content() {
 
     // Erstellt FormData Objekt mit Datei im Anhang
     // Durch Button-Disabling nur bei richtigen Dateien
-    const onFileUpload = () => {
+    const onFileUpload = (e) => {
+        // Verhindert URL-Anpassung
+        e.preventDefault();
+
         if (selectedFile) {
+            document.getElementById("formular").style.display = "none";
             document.getElementById("isPackaging").style.display = "inline";
             setLoading(true);
             document.getElementById("hochladenButton").style.display = "none";
@@ -31,6 +39,9 @@ function Content() {
             const formData = new FormData();
             formData.append('file', selectedFile);
             formData.append('filename', selectedFile.name);
+            formData.append('email', email)
+            formData.append('appDir', appDir)
+            formData.append('processName', processName)
 
             axios.post("http://localhost:5000/fileToBackend", formData)
                 .then(res => {
@@ -46,7 +57,6 @@ function Content() {
                 .catch(err => console.error("Fehler beim Backend-Call:", err));
 
         } else {
-            // entweder hier show von error im fe oder immediately disabled haben
             console.log("Erstellungsversuch ohne Datei");
         }
     }
@@ -84,6 +94,12 @@ function Content() {
         }
     }
 
+    const toUserEntry = () => {
+        document.getElementById("paketierungStarten").style.display = "none";
+        document.getElementById("formular").style.display = "flex";
+        document.getElementById("hochladenButton").style.display = "flex";
+    }
+
     // onFileUpload von Anfang an nicht ermöglichen
     useEffect(() => {
         if (!selectedFile) {
@@ -96,6 +112,7 @@ function Content() {
         if (name.endsWith(".msi")) {
             setIsUploadDisabled(false);
         } else if (name.endsWith(".exe")) {
+            // Bis Funktion gewährleistet wird
             setIsUploadDisabled(true);
         } else {
             setIsUploadDisabled(true);
@@ -111,19 +128,46 @@ function Content() {
 
                 <input type="file" accept={".msi, .exe"} onChange={onFileChange}/>
                 <p className={"kleinerAbsatz"}></p>
+
+                <form id={"formular"} onSubmit={onFileUpload}>
+                    <div className={"form-row"}>
+                        <p className={"progressText"} id={"infoNeeded"}>Vor Paketierungsabschluss, benötigen wir von
+                            Ihnen noch ein paar Informationen:</p>
+                    </div>
+                    <div className={"form-row"}>
+                        <label>Email-Adresse: *</label>
+                        <input type="email"
+                               name="email"
+                               required={true}
+                               onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className={"form-row"}>
+                        <label>ApplicationDir der Anwendung: *</label>
+                        <input required={true} onChange={(e) => setAppDir(e.target.value)}/>
+                    </div>
+                    <div className={"form-row"}>
+                        <label>Prozessname der Anwendung: *</label>
+                        <input required={true} onChange={(e) => setProcessName(e.target.value)}/>
+                    </div>
+                    <button type={"submit"} className={"allButtons"} id={"hochladenButton"}
+                            disabled={isUploadDisabled}>Paketierung erstellen
+                    </button>
+                </form>
+
                 <div><ClipLoader loading={loading} color="#123abc" size={70}/></div>
                 <p className={"progressText"} id={"isPackaging"}>Ihr Paket wird erstellt...</p>
                 <p className={"progressText"} id={"packageDone"}>Ihr Paket wurde erstellt und steht Ihnen nun zum
                     Download bereit.</p>
                 <p></p>
-                <p className={"progressText"} id={"informUser"}>Bitte passen Sie das Paket ggfs. an und geben Ihre
-                    Email-Adresse unter AUTHOR ein. Auch AppDir und Process.exe müssen noch abgeändert werden.</p>
+                <p className={"progressText"} id={"informUser"}>Bitte überprüfen Sie die Richtigkeit aller Daten und
+                    passen das Paket ggfs. an.</p>
                 <p className={"kleinerAbsatz"}></p>
-                <button className={"allButtons"} id={"hochladenButton"} onClick={onFileUpload}
-                        disabled={isUploadDisabled}>Paketierung erstellen
+                <button className={"allButtons"} id={"paketierungStarten"} onClick={toUserEntry}
+                        disabled={isUploadDisabled}>Paketierung starten
                 </button>
                 <button className={"allButtons"} id={"downloadButton"} onClick={onFileDownload}>Paketierung
-                    runterladen
+                    herunterladen
                 </button>
                 <button className={"allButtons"} id={"neuePaketierungButton"} onClick={() => window.location.reload()}>
                     Neue Paketierung erstellen

@@ -181,7 +181,6 @@ def save_temp_file(file_storage, suffix=".msi"):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
     file_storage.save(temp_file.name)
     temp_file.close()  # Datei wird nur geschrieben, nicht offen gehalten
-    #logger.info(temp_file.name)
     return temp_file.name
 
 # Löscht die temporäre Datei, wenn sie existiert.

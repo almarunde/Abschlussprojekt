@@ -23,7 +23,6 @@ function Content() {
     // Erstellt FormData Objekt mit Datei im Anhang
     // Durch Button-Disabling nur bei richtigen Dateien
     const onFileUpload = () => {
-        console.log("Upload-Funktion wurde aufgerufen");
         if (selectedFile) {
             document.getElementById("isPackaging").style.display = "inline";
             setLoading(true);
@@ -38,7 +37,6 @@ function Content() {
                     setFilePath(res.data);
                     setLoading(false);
                     document.getElementById("isPackaging").style.display = "none";
-                    console.log("Backend-Antwort:", res.data);
 
                     // Download erst nach Erfolg ermöglichen
                     document.getElementById("packageDone").style.display = "inline";

@@ -96,3 +96,10 @@ npm run dev
 Die Ausführung von npm Install ist nur beim ersten Mal wirklich nötig - kann aber nicht schaden
 
 Das Projekt wird unter `http://localhost:5173/` verfügbar sein.
+
+## Extra: Zur Entlastung des Speicherplatz des Servers: Aufgabenplanung Paket-Cache leeren
+
+1. Dateien unter "extras" hier im Projekt nach C:\ProgramData\#Paketierungshelfer verschieben
+2. Aufgabenplanung öffnen
+3. Auf "Aufgabe importieren..." --> EmptyPackageCache.xml reinladen
+4. 'OK' drücken

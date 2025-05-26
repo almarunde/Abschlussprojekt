@@ -24,7 +24,14 @@ function Content() {
         setSelectedFile(file);
     }
 
-    // Erstellt FormData Objekt mit Datei im Anhang
+    // Zum Anzeigen des Formulars
+    const toUserEntry = () => {
+        document.getElementById("paketierungStarten").style.display = "none";
+        document.getElementById("formular").style.display = "flex";
+        document.getElementById("hochladenButton").style.display = "flex";
+    }
+
+    // Weiterleitung zu Paketerstellungslogik
     // Durch Button-Disabling nur bei richtigen Dateien
     const onFileUpload = (e) => {
         // Verhindert URL-Anpassung
@@ -61,6 +68,7 @@ function Content() {
         }
     }
 
+    // Download starten
     const onFileDownload = async () => {
         try {
             const response = await axios.get(`http://localhost:5000/download?path=${filePath}`, {
@@ -94,13 +102,7 @@ function Content() {
         }
     }
 
-    const toUserEntry = () => {
-        document.getElementById("paketierungStarten").style.display = "none";
-        document.getElementById("formular").style.display = "flex";
-        document.getElementById("hochladenButton").style.display = "flex";
-    }
-
-    // onFileUpload von Anfang an nicht ermöglichen
+    // onFileUpload beim ersten Render schon nicht einfach so ermöglichen
     useEffect(() => {
         if (!selectedFile) {
             setIsUploadDisabled(true);

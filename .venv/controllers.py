@@ -8,20 +8,20 @@ from paketierungshelfer import create_package
 import logging
 
 logging.basicConfig(
-    level=logging.INFO,  # Oder DEBUG für mehr Details
+    level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s'
 )
-
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:5173'])  # Cross-Origin Resource Sharing
+CORS(app, origins=['http://localhost:5173'])  # Cross-Origin Resource Sharing - für Front- und Backend-Verbindung
 
+# Ausschließlich zum Testen von Erreichbarkeit
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
 
-
+# Hierunter alles zur Paketierungserstellung selbst
 @app.route('/fileToBackend', methods=['POST'])
 def upload_file():
     logger.info('Started')
@@ -39,6 +39,7 @@ def upload_file():
 
     return {'message': f'Datei {msifilename} empfangen'}, 200
 
+# Hierunter alles Nötige zum Download
 @app.route('/download')
 def download():
     file_path = request.args.get('path')
@@ -49,6 +50,7 @@ def download():
     response.headers["Access-Control-Expose-Headers"] = "X-File-Name"  # Damit JS ihn lesen darf
     return response
 
+# Hierunter alles zum regulär gewollten cleanup
 @app.route('/cleanup', methods=['POST'])
 def cleanup():
     data = request.json

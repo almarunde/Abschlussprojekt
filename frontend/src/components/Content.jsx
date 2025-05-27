@@ -69,6 +69,7 @@ function Content() {
     }
 
     // Download starten
+    // Von KI zu Blob als Lösung für Download on Click geführt
     const onFileDownload = async () => {
         try {
             const response = await axios.get(`http://localhost:5000/download?path=${filePath}`, {
@@ -76,6 +77,7 @@ function Content() {
             });
 
             // Neuen Header lesen
+            // Headers von KI als Lösung zum Beibehalt des originalen .zip-Ordner-Namen gegeben
             let filename = response.headers['x-file-name'] || 'fallback.zip';
 
             const blob = new Blob([response.data], {type: 'application/zip'})

@@ -67,6 +67,7 @@ def create_package(msifile, msifilename, email, appDir, processName):
     replace(final_inf, "[PROCESS.exe]", processName)
 
     # Paketierung zippen
+    # Aufbau von shutil.make_archive() durch KI erklären lassen
     zip_path = shutil.make_archive(
         base_name=parent_folder,
         format="zip",
@@ -174,6 +175,7 @@ def search_entry(query, temp_path):
 
 # Nötig wegen Umgang mit .OpenDatabase
 # Speichert eine hochgeladene Datei temporär und gibt den Dateipfad zurück
+# tempfile-Modul durch KI herausgefunden
 def save_temp_file(file_storage, suffix=".msi"):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
     file_storage.save(temp_file.name)

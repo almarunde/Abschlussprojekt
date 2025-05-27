@@ -12,6 +12,7 @@ Folgende Software muss manuell auf dem System installiert sein:
 
 ## Proxy konfigurieren
 Muss **immer über git bash** durchgeführt werden, sobald das Notebook wieder im Charité-Netz ist.
+Außerdem muss der proxy auch in der IDE eingestellt sein.
 
 ### Mit Git:
 ```git bash
@@ -60,6 +61,13 @@ Danach noch in IDE dafür sorgen, dass Paket definitiv installiert ist.
 ### Step 5 - Install PowerShell Plugin in IDE
 Unter File -> Settings -> Plugins -> PowerShell installieren
 
+### Step 6 - Install React-Spinners
+Die IDE erkennt nicht unbedingt direkt, dass diese Installation auch mit dem proxy läuft - so umgeht man darauf bezogene Probleme.
+
+```sh
+npm install react-spinners --save --proxy http://proxy.charite.de:8080
+```
+
 ## Starten des Backends
 Nach Aktivierung der .venv:
 ```sh
@@ -76,6 +84,8 @@ Das Projekt wird unter `http://localhost:5000/` verfügbar sein.
 # Execute in git bash!!!
 npm create vite@latest frontend -- --template react
 ```
+
+Hier auswählen, dass bestehende Dateien ignoriert werden sollen - danach rollback via Git-Fenster.
 
 ### Axios
 ```git bash
@@ -97,6 +107,18 @@ Die Ausführung von npm Install ist nur beim ersten Mal wirklich nötig - kann a
 
 
 Das Projekt wird unter `http://localhost:5173/` verfügbar sein.
+
+## Für hostenden Server:
+
+Füge in vite.config.js den folgenden Abschnitt hinzu, um es via dieser IP-Adresse zu hosten:
+```
+server: {
+    host: true,
+    allowedHosts: ['paketierungstool']
+  }
+```
+Der Abschnitt um allowedHosts ermöglicht, die Seite via http://paketierungstool:5173/ einzusehen - und nicht nur über die hostende IP-Adresse.
+Dafür muss aber beim Client die IP-Adresse unter C:\Windows\System32\drivers\etc\hosts mit der entsprechenden Namensauflösung hinterlegt sein.
 
 ## Wichtiges Extra: Zur Entlastung des Speicherplatz des Servers: Aufgabenplanung Paket-Cache leeren
 

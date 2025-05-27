@@ -14,7 +14,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:5173'])  # Cross-Origin Resource Sharing - für Front- und Backend-Verbindung
+CORS(app, origins=['http://localhost:5173'])  # Cross-Orgin Resource Sharing - für Front- und Backend-Verbindung
 
 # Ausschließlich zum Testen von Erreichbarkeit
 @app.route("/")

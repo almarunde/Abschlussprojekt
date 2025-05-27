@@ -173,14 +173,14 @@ def search_entry(query, temp_path):
     return find_regkey_ps
 
 # Nötig wegen Umgang mit .OpenDatabase
-# Speichert eine hochgeladene Datei temporär und gibt den Dateipfad zurück.
+# Speichert eine hochgeladene Datei temporär und gibt den Dateipfad zurück
 def save_temp_file(file_storage, suffix=".msi"):
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
     file_storage.save(temp_file.name)
     temp_file.close()  # Datei wird nur geschrieben, nicht offen gehalten
     return temp_file.name
 
-# Löscht die temporäre Datei, wenn sie existiert.
+# Löscht die temporäre Datei, wenn sie existiert
 def delete_file(filepath):
     try:
         os.remove(filepath)

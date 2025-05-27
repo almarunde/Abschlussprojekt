@@ -93,7 +93,6 @@ function Content() {
                 path: filePath
             });
 
-            console.log("Server-Dateien gelöscht");
             document.getElementById("downloadButton").style.display = "none";
             document.getElementById("neuePaketierungButton").style.display = "inline";
 
